@@ -1,46 +1,53 @@
-#include <stdio.h>
-#define max 25
-void main()
-{
-    int frag[max], b[max], f[max], i, j, nb, nf, temp;
-    static int bf[max], ff[max];
-    clrscr();
-    printf("\n\tMemory Management Scheme - First Fit");
-    printf("\nEnter the number of blocks:");
-    scanf("%d", &nb);
-    printf("Enter the number of files:");
-    scanf("%d", &nf);
-    printf("\nEnter the size of the blocks:-\n");
-    for (i = 1; i <= nb; i++)
-    {
-        printf("Block %d:", i);
-        scanf("%d", &b[i]);
+#include<stdio.h>
+int main(){
+    int nob,nop;
+    printf("Enter the number of Blocks: ");
+    scanf("%d",&nob);
+    int block_size[nob];
+    for(int i=0;i<nob;i++){
+        printf("Enter Size of Block-%d: ",i+1);
+        scanf("%d",&block_size[i]);
     }
-    printf("Enter the size of the files :-\n");
-    for (i = 1; i <= nf; i++)
-    {
-        printf("File %d:", i);
-        scanf("%d", &f[i]);
+    printf("Enter the number of Processes: ");
+    scanf("%d",&nop);
+    int process_size[nop];
+    for(int i=0;i<nop;i++){
+        printf("Enter Size of Process-%d: ",i+1);
+        scanf("%d",&process_size[i]);
     }
-    for (i = 1; i <= nf; i++)
-    {
-        for (j = 1; j <= nb; j++)
-        {
-            if (bf[j] != 1)
-            {
-                temp = b[j] - f[i];
-                if (temp >= 0)
-                {
-                    ff[i] = j;
-                    break;
+    int available[nob];
+    for(int i=0;i<nob;i++){
+        available[i] = 1;
+    }
+    int frag[nob];
+    int block_alloc[nop];
+    printf("Process\t\tBlock Allocated\tProcessSize\tFrag\n");
+    
+    for(int i=0;i<nop;i++){
+        int flag = 0;
+        int block_allocated = -1;
+        int fragment = -1;
+        for(int j=0;j<nob;j++){
+            if(available[j]){
+                if(block_size[j] - process_size[i]>fragment){
+                    block_allocated = j;
+                    fragment = block_size[j] - process_size[i];
+                    flag =1;
                 }
             }
         }
-        frag[i] = temp;
-        bf[ff[i]] = 1;
+        frag[i] = block_size[block_allocated] - process_size[i];
+        available[block_allocated] = 0;
+        block_alloc[i] = block_allocated;
+        printf("%d\t\t",i+1);
+        if(flag==0){
+            printf("Not Allocated\t\t");
+            printf("%d\n",process_size[i]);
+        }else{
+            printf("%d\t\t",block_alloc[i]);
+            printf("%d\t\t",process_size[i]);
+            printf("%d\n",frag[i]);
+        }
     }
-    printf("\nFile_no:\tFile_size :\tBlock_no:\tBlock_size:\tFragement");
-    for (i = 1; i <= nf; i++)
-        printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d", i, f[i], ff[i], b[ff[i]], frag[i]);
-    getch();
+    return 0;
 }
