@@ -1,35 +1,41 @@
-#include <stdio.h>
-int main()
-{
-    int i, j, n, a[50], frame[10], no, k, avail, count = 0;
-    printf("\n ENTER THE NUMBER OF PAGES:\n");
-    scanf("%d", &n);
-    printf("\n ENTER THE PAGE NUMBER :\n");
-    for (i = 1; i <= n; i++)
-        scanf("%d", &a[i]);
-    printf("\n ENTER THE NUMBER OF FRAMES :");
-    scanf("%d", &no);
-    for (i = 0; i < no; i++)
-        frame[i] = -1;
-    j = 0;
-    printf("\tref string\t page frames\n");
-    for (i = 1; i <= n; i++)
-    {
-        printf("%d\t\t", a[i]);
-        avail = 0;
-        for (k = 0; k < no; k++)
-            if (frame[k] == a[i])
-                avail = 1;
-        if (avail == 0)
-        {
-            frame[j] = a[i];
-            j = (j + 1) % no;
-            count++;
-            for (k = 0; k < no; k++)
-                printf("%d\t", frame[k]);
+#include<stdio.h>
+int main(){
+    int nop;
+    printf("Enter the Number Of Pages: ");
+    scanf("%d",&nop);
+    int pages[nop];
+    printf("Enter the Page Numbers: ");
+    for(int i=0;i<nop;i++){
+        scanf("%d",&pages[i]);
+    }
+    int nof;
+    int faults=0;
+    int pointer= 0;
+    printf("Enter the Number of Frames: ");
+    scanf("%d",&nof);
+    int frames[nof];
+    for(int i=0;i<nof;i++){
+        frames[i] = -1;
+    }
+    printf("Ref String \tFrames\n");
+    for(int i=0;i<nop;i++){
+        printf("%d\t\t",pages[i]);
+        int found = 0;
+        for(int j=0;j<nof;j++){
+            if(frames[j]==pages[i]){
+                found =1;
+            }
+        }
+        if(found==0){
+            faults++;
+            frames[pointer] = pages[i];
+            pointer=(pointer+1)%nof;
+            for(int i=0;i<nof;i++){
+                printf("%d\t",frames[i]);
+            }
         }
         printf("\n");
     }
-    printf("Page Fault Is %d", count);
+    printf("Total Faults is : %d",faults);
     return 0;
 }
