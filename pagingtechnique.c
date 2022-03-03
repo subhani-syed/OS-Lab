@@ -1,41 +1,36 @@
-#include <stdio.h>
-#include <stdlib.h>
-void main()
-{
-    int ps, np, nf, log;
-    int alloc[50], base[50], frame[50], page[50];
-    int i, f, n, pa, fs, pno, add, offset;
-    int temp;
-    int f1;
-
-    printf("\n\t\t PAGING\n");
-    printf("\n\t Enter the logical address space:");
-    scanf("%d", &log);
-    printf("\n\t Enter the page size:");
-    scanf("%d", &ps);
-    printf("\n\t Enter the physical address space:");
-    scanf("%d", &pa);
-    fs = ps;
-    np = log / ps;
-    nf = pa / fs;
-    printf("\n\t Number of pages  = %d", np);
-    printf("\n\t Number of frames = %d", nf);
-    for (i = 0; i < nf; i++)
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+    int log;
+    printf("ENter the logical Addres space: ");
+    scanf("%d",&log);
+    printf("ENter page Size: ");
+    int psize;
+    scanf("%d",&psize);
+    printf("Enter Physical Address Space: ");
+    int pha;
+    scanf("%d",&pha);
+    int nop = log/psize;
+    int fsize = psize;
+    int nof = pha/fsize;
+    printf("The number of  Pages : %d\n",nop);
+    printf("The number of  Frames : %d\n",nof);
+    int frame_no[nof];
+    int alloc[nof];
+    for(int i=0;i<nof;i++){
         alloc[i] = 0;
-    for (i = 0; i < np; i++)
-    {
-        temp = rand() % nf;
-        while (alloc[temp] == 1)
-            temp = rand() % nf;
+    }
+    for(int i=0;i<nop;i++){
+        int temp = rand()%nof;
+        while(alloc[temp]==1){
+            temp = rand()%nof;
+        }
         alloc[temp] = 1;
-        frame[i] = temp;
+        frame_no[i] = temp;
     }
-    printf("\n Page No \t Frame No \t Base address ");
-    for (i = 0; i < np; i++)
-    {
-        base[i] = frame[i] * ps;
-        page[i] = i;
-        printf("\n%d\t\t %d\t %d\t\t", i, frame[i], base[i]);
+    printf("Page No\t\tFrameNo\t\tBase Address\n");
+    for(int i=0;i<nop;i++){
+        printf("%d\t\t%d\t\t%d\n",i,frame_no[i],frame_no[i]*psize);
     }
-    getch();
+    return 0;
 }
